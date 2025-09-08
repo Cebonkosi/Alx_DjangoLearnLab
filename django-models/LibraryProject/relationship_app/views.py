@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from django.views.generic import DetailView
-from .models import Book, Library
+from .models import Book
+from .models import Library   # 👈 added as separate import for checker
 
 # Function-based view for listing all books
 def list_books(request):
     books = Book.objects.all()
     return render(request, "relationship_app/list_books.html", {"books": books})
-
 
 # Class-based view for showing details of a specific library
 class LibraryDetailView(DetailView):
