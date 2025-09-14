@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required, permission_required
 from .models import Book
+from django.db.models import Q
 
 @permission_required('bookshelf.can_view', raise_exception=True)
 def view_books(request):
@@ -27,3 +28,8 @@ def delete_book(request, book_id):
 @permission_required('bookshelf.view_book', raise_exception=True)
 def book_list(request):
     books = Book.objects.all()
+
+def search_books(request):
+    query = request.GET.get("q", "")
+    books = Book.objects.filter(Q(title__icontains=query) | Q(author__icontains=query))
+    return render(request, "bookshelf/book_list.html", {"books": books, "query": query})
