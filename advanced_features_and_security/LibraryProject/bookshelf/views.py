@@ -1,7 +1,7 @@
 # advanced_features_and_security/bookshelf/views.py
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import login_required, permission_required
 from .models import Book
 
 @permission_required('bookshelf.can_view', raise_exception=True)
@@ -22,3 +22,8 @@ def edit_book(request, book_id):
 def delete_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     return HttpResponse(f"Delete page for {book.title} - only for users with can_delete permission")
+
+@login_required
+@permission_required('bookshelf.view_book', raise_exception=True)
+def book_list(request):
+    books = Book.objects.all()
