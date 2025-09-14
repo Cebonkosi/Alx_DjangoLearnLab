@@ -7,6 +7,13 @@ SECRET_KEY = 'replace-this-with-a-secure-key'
 DEBUG = False
 ALLOWED_HOSTS = []
 
+SECURE_SSL_REDIRECT = True  
+
+# HTTP Strict Transport Security (HSTS) - 1 year (in seconds)
+SECURE_HSTS_SECONDS = 31536000  
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  
+SECURE_HSTS_PRELOAD = True  
+
 SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = "DENY"
 SECURE_CONTENT_TYPE_NOSNIFF = True
