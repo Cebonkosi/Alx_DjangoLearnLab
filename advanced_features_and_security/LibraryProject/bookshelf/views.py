@@ -1,9 +1,11 @@
 # advanced_features_and_security/bookshelf/views.py
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required, permission_required
 from .models import Book
 from django.db.models import Q
+from .forms import ExampleForm
+
 
 @permission_required('bookshelf.can_view', raise_exception=True)
 def view_books(request):
@@ -33,3 +35,13 @@ def search_books(request):
     query = request.GET.get("q", "")
     books = Book.objects.filter(Q(title__icontains=query) | Q(author__icontains=query))
     return render(request, "bookshelf/book_list.html", {"books": books, "query": query})
+
+def example_form_view(request):
+    if request.method == "POST":
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("book_list")
+    else:
+        form = ExampleForm()
+    return render(request, "bookshelf/form_example.html", {"form": form})
