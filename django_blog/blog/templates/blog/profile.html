@@ -1,0 +1,22 @@
+<!-- blog/templates/blog/profile.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Profile</title>
+</head>
+<body>
+    <h1>Your profile - {{ request.user.username }}</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <!-- If using ProfileForm -->
+        {{ p_form.as_p }}
+        <button type="submit">Update Profile</button>
+    </form>
+
+    <p><strong>Username:</strong> {{ request.user.username }}</p>
+    <p><strong>Email:</strong> {{ request.user.email }}</p>
+    <p><a href="{% url 'logout' %}">Logout</a></p>
+</body>
+</html>
