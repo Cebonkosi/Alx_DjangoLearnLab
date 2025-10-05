@@ -10,6 +10,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .models import Post, Comment
 from .forms import CommentForm
 from .forms import PostForm
+from django.db.models import Q
 
 def register(request):
     """
@@ -45,6 +46,15 @@ def profile(request):
     return render(request, 'blog/profile.html', {
         'p_form': p_form
     })
+
+def search_posts(request):
+    query = request.GET.get('q')
+    results = Post.objects.none()
+    if query:
+        results = Post.objects.filter(
+            Q(title__icontains=query) | Q(content__icontains=query) | Q(tags__name__icontains=query)
+        ).distinct()
+    return render(request, 'blog/search_results.html', {'results': results, 'query': query})
 
 # List all posts
 class PostListView(ListView):
