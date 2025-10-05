@@ -153,3 +153,12 @@ class CommentListView(ListView):
     def get_queryset(self):
         post = get_object_or_404(Post, pk=self.kwargs['pk'])
         return Comment.objects.filter(post=post).order_by('-created_at')
+    
+class PostByTagListView(ListView):
+    model = Post
+    template_name = 'blog/posts_by_tag.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        tag_name = self.kwargs.get('tag_name')
+        return Post.objects.filter(tags__name__iexact=tag_name)
